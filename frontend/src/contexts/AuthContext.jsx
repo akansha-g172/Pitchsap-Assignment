@@ -5,6 +5,9 @@ const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
+// 1. Define the Base URL dynamically
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -12,18 +15,22 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
     }
   }, [token]);
 
   const login = async (email, password) => {
-    const res = await axios.post('http://localhost:5000/auth/login', { email, password });
+    // 2. Use the dynamic API_URL
+    const res = await axios.post(`${API_URL}/auth/login`, { email, password });
     setToken(res.data.token);
     localStorage.setItem('token', res.data.token);
     setUser(res.data.user || { email });
   };
 
   const signup = async (name, email, password, role) => {
-    await axios.post('http://localhost:5000/auth/signup', { name, email, password, role });
+    // 3. Use the dynamic API_URL
+    await axios.post(`${API_URL}/auth/signup`, { name, email, password, role });
     await login(email, password);
   };
 
