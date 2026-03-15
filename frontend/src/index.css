@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pitchsap-dark: #0B0B0F;
+  --color-pitchsap-purple: #8B5CF6;
+  --color-pitchsap-violet: #A855F7;
+  --background-image-gradient-purple: linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%);
+}
+
+/* Performance: smooth scroll, GPU-friendly containment */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scroll containers: contain layout/paint for better repaints */
+.scroll-contain {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px;
+}
+
+/* Focus visible for accessibility (keyboard nav) */
+:focus-visible {
+  outline: 2px solid var(--color-pitchsap-purple);
+  outline-offset: 2px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
